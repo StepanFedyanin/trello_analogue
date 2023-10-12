@@ -1,6 +1,9 @@
 textarea{
     resize: none;
 }
+img{
+    width: 100%;
+}
 
 body{
     height: 1px;
@@ -89,6 +92,19 @@ body{
             &:before{
                 transform: rotate(45deg);
             }
+        }
+    }
+}
+.card{
+    &__close{
+        background: transparent;
+        border: none;
+        padding: 0;
+        margin: 0;
+        width: 20px;
+        transition: transform .3s;
+        &:hover,&:active{
+            transform:scale(0.7);
         }
     }
 }

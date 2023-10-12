@@ -11,13 +11,13 @@ function List() {
         if(typebtn==='next'){
             switch (type) {
                 case 2: 
-                    setListData(prev=>({...prev,progress:[...prev.progress,data],created:[...prev.created.filter(item=>item.id!==data.id)]}))
+                    setListData(prev=>({...prev,progress:[data,...prev.progress],created:[...prev.created.filter(item=>item.id!==data.id)]}))
                     break;
                 case 3:
-                    setListData(prev=>({...prev,inspection:[...prev.inspection,data],progress:[...prev.progress.filter(item=>item.id!==data.id)]}))
+                    setListData(prev=>({...prev,inspection:[data,...prev.inspection],progress:[...prev.progress.filter(item=>item.id!==data.id)]}))
                     break;
                 case 4:
-                        setListData(prev=>({...prev,ready:[...prev.ready,data],inspection:[...prev.ready.filter(item=>item.id!==data.id)]}))
+                        setListData(prev=>({...prev,ready:[data,...prev.ready],inspection:[...prev.ready.filter(item=>item.id!==data.id)]}))
                     break;
                 default:
                     break;
@@ -25,17 +25,60 @@ function List() {
         }else{
             switch (type) {
                 case 1: 
-                    setListData(prev=>({...prev,created:[...prev.created,data],progress:[...prev.progress.filter(item=>item.id!==data.id)]}))
+                    setListData(prev=>({...prev,created:[data,...prev.created],progress:[...prev.progress.filter(item=>item.id!==data.id)]}))
                     break;
                 case 2: 
-                    setListData(prev=>({...prev,progress:[...prev.progress,data],inspection:[...prev.inspection.filter(item=>item.id!==data.id)]}))
+                    setListData(prev=>({...prev,progress:[data,...prev.progress],inspection:[...prev.inspection.filter(item=>item.id!==data.id)]}))
                     break;
                 case 3:
-                    setListData(prev=>({...prev,inspection:[...prev.inspection,data],ready:[...prev.ready.filter(item=>item.id!==data.id)]}))
+                    setListData(prev=>({...prev,inspection:[data,...prev.inspection],ready:[...prev.ready.filter(item=>item.id!==data.id)]}))
                     break;
                 default:
                     break;
             }
+        }
+    }
+    const removeCard=(id,list)=>{
+        let type ='';
+        switch (list) {
+            case '1': 
+                type='created'
+                break;
+            case '2': 
+                type='progress'
+                break;
+            case '3':
+                type='inspection'
+                break;
+            case '4':
+                type='ready'
+                break;
+            default:
+                break;
+        }
+        setListData(prev=>({...prev,[type]:prev[type].filter(card=>card.id!==id)}));
+    }
+    const changeCard = (id,list) =>{
+        let type ='';
+        switch (list) {
+            case '1': 
+                type='created'
+                break;
+            case '2': 
+                type='progress'
+                break;
+            case '3':
+                type='inspection'
+                break;
+            case '4':
+                type='ready'
+                break;
+            default:
+                break;
+        }
+        const obj = [...listData[type]].filter(card=>card.id===id)[0];
+        if(obj?.id){
+            
         }
     }
     return (  
@@ -47,7 +90,7 @@ function List() {
                     <h4>Созданные задачи</h4>
                     {
                         listData.created.map(card=>
-                            <Card key={card.id} type='1' data={card} movingCard={movingCard}/>
+                            <Card key={card.id} type='1' data={card} movingCard={movingCard} removeCard={removeCard} changeCard={changeCard}/>
                         )
                     }
                 </div>
