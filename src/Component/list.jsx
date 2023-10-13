@@ -2,7 +2,7 @@ import { useState } from "react";
 import Card from "./card";
 import Modal from "./modal";
 function List() {
-    const [modal,setModal] = useState(false);
+    const [modal,setModal] = useState({isShow:false,type:'add',list:'created',value:{id:null,title:null,content:null}} );
     const [listData,setListData] = useState({created:[],progress:[],inspection:[],ready:[]});
     const addCard = (id,title,content) =>{
         setListData(prev=>({...prev,created:[{id,title,content},...prev.created]}));
@@ -78,13 +78,18 @@ function List() {
         }
         const obj = [...listData[type]].filter(card=>card.id===id)[0];
         if(obj?.id){
-            
+            setModal(prev=>({...prev,isShow:true,list:type,type:'change',value:{...obj}}))
         }
+    }
+    const exchangeCard = (id,title,content,list) =>{
+        const index = listData[list].findIndex(item=>item.id===id)
+        console.log(index);
+        // setListData(prev=>({...prev,[list]:[]}))
     }
     return (  
         <div className="container">
-            <button className="btn btn-outline-primary mb-5" onClick={()=>setModal(prev=>!prev)}>Создать задачу</button>
-            <Modal isShow={modal} changeHidden={setModal} addCard={addCard}/>
+            <button className="btn btn-outline-primary mb-5" onClick={()=>setModal(prev=>({...prev,isShow:!prev.isShow}))}>Создать задачу</button>
+            <Modal params={modal} changeHidden={setModal} exchangeCard={exchangeCard} addCard={addCard}/>
             <div className="row">
                 <div className="col-3">
                     <h4>Созданные задачи</h4>
