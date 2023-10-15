@@ -1,48 +1,53 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import {useEffect} from "react";
+import {useState} from "react";
 
-function Modal({params,changeHidden,addCard,exchangeCard}) {
-    const style= ['poppup alert alert-primary'];
-    const [cardParams,setCardParams] = useState({id:Date.now(),title:'',content:''});
-    if(params.isShow === true) {
+function Modal({params, changeHidden, addCard, exchangeCard}) {
+    const style = ['poppup alert alert-primary'];
+    const [cardParams, setCardParams] = useState({id: Date.now(), title: '', content: ''});
+    if (params.isShow === true) {
         style.push('poppup__active');
     }
-    useEffect(()=>{
-        if(params.value.id){
-            setCardParams(prev=>({id:params.value.id,title:params.value.title,content:params.value.content}))
+    useEffect(() => {
+        if (params.type === 'change' && params.value.id) {
+            setCardParams(prev => ({id: params.value.id, title: params.value.title, content: params.value.content}))
         }
-    },[params])
-    const pushAddParams=()=>{
-        addCard(cardParams.id,cardParams.title, cardParams.content);
-        setCardParams({id:Date.now(),title:'',content:''});
-        changeHidden(prev=>({...prev,isShow:!prev.isShow}));
+    }, [params])
+    const pushAddParams = () => {
+        addCard(cardParams.id, cardParams.title, cardParams.content);
+        setCardParams({id: Date.now(), title: '', content: ''});
+        changeHidden(prev => ({...prev, isShow: !prev.isShow}));
     }
-    const changeContentCard = () =>{
-        exchangeCard(cardParams.id,cardParams.title, cardParams.content,params.list);
-        setCardParams({id:Date.now(),title:'',content:''});
-        changeHidden(prev=>({...prev,isShow:!prev.isShow}));
+    const changeContentCard = () => {
+        exchangeCard(cardParams.id, cardParams.title, cardParams.content, params.list);
+        setCardParams({id: Date.now(), title: '', content: ''});
+        changeHidden(prev => ({...prev, isShow: !prev.isShow}));
     }
-    return (  
-        <div className={style.join(' ')} onClick={()=>changeHidden(prev=>({...prev,isShow:!prev.isShow}))}>
-            <div className="poppup__content d-flex flex-column" onClick={e=>e.stopPropagation()}>
+    return (
+        <div className={style.join(' ')} onClick={() => changeHidden(prev => ({...prev, isShow: !prev.isShow}))}>
+            <div className="poppup__content d-flex flex-column" onClick={e => e.stopPropagation()}>
                 <div className="h4 d-flex flex-row align-items-center justify-content-between">
                     создание задачи
-                    <button className='poppup__exit' onClick={()=>changeHidden(prev=>({...prev,isShow:!prev.isShow}))}></button>
+                    <button className='poppup__exit'
+                            onClick={() => changeHidden(prev => ({...prev, isShow: !prev.isShow}))}></button>
                 </div>
                 <div className="w-100 d-flex flex-column h-100">
                     <label className="h6 d-flex flex-column gap-3 mb-5">
                         Заголовок
-                        <input type='text' className='input form-control' value={cardParams.title} onChange={e=>setCardParams(prev=>({...prev,title:e.target.value}))}/>
+                        <input type='text' className='input form-control' value={cardParams.title}
+                               onChange={e => setCardParams(prev => ({...prev, title: e.target.value}))}/>
                     </label>
                     <label className="h6 d-flex flex-column gap-3 flex-grow-1 mb-5">
                         Описание задачи
-                        <textarea type='text' className='input form-control flex-grow-1' value={cardParams.content} onChange={e=>setCardParams(prev=>({...prev,content:e.target.value}))}/>
+                        <textarea type='text' className='input form-control flex-grow-1' value={cardParams.content}
+                                  onChange={e => setCardParams(prev => ({...prev, content: e.target.value}))}/>
                     </label>
                     {
-                        params.type === 'add'?
-                        <button className="btn btn-outline-primary" onClick={()=>pushAddParams()}>Сохранить</button>
-                        :
-                        <button className="btn btn-outline-primary" onClick={()=>changeContentCard()}>Изменить</button>
+                        params.type === 'add' ?
+                            <button className="btn btn-outline-primary"
+                                    onClick={() => pushAddParams()}>Сохранить</button>
+                            :
+                            <button className="btn btn-outline-primary"
+                                    onClick={() => changeContentCard()}>Изменить</button>
                     }
                 </div>
             </div>
