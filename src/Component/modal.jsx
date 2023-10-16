@@ -13,14 +13,18 @@ function Modal({params, changeHidden, addCard, exchangeCard}) {
         }
     }, [params])
     const pushAddParams = () => {
-        addCard(cardParams.id, cardParams.title, cardParams.content);
-        setCardParams({id: Date.now(), title: '', content: ''});
-        changeHidden(prev => ({...prev, isShow: !prev.isShow}));
+        if (cardParams.title.trim() !== '' && cardParams.content.trim() !== '') {
+            addCard(cardParams.id, cardParams.title, cardParams.content);
+            setCardParams({id: Date.now(), title: '', content: ''});
+            changeHidden(prev => ({...prev, isShow: !prev.isShow}));
+        }
     }
     const changeContentCard = () => {
-        exchangeCard(cardParams.id, cardParams.title, cardParams.content, params.list);
-        setCardParams({id: Date.now(), title: '', content: ''});
-        changeHidden(prev => ({...prev, isShow: !prev.isShow}));
+        if (cardParams.title.trim() !== '' && cardParams.content.trim() !== '') {
+            exchangeCard(cardParams.id, cardParams.title, cardParams.content, params.list);
+            setCardParams({id: Date.now(), title: '', content: ''});
+            changeHidden(prev => ({...prev, isShow: !prev.isShow}));
+        }
     }
     return (
         <div className={style.join(' ')} onClick={() => changeHidden(prev => ({...prev, isShow: !prev.isShow}))}>
