@@ -13,7 +13,8 @@ function List() {
     const addCard = (id, title, content) => {
         setListData(prev => ({...prev, created: [{id, title, content}, ...prev.created]}));
     }
-    const movingCard = (type, typebtn, data,) => {
+    const movingCard = (e, type, typebtn, data) => {
+        e?.stopPropagation();
         if (typebtn === 'next') {
             switch (type) {
                 case 2:
@@ -34,7 +35,7 @@ function List() {
                     setListData(prev => ({
                         ...prev,
                         ready: [data, ...prev.ready],
-                        inspection: [...prev.ready.filter(item => item.id !== data.id)]
+                        inspection: [...prev.inspection.filter(item => item.id !== data.id)],
                     }))
                     break;
                 default:
@@ -68,7 +69,8 @@ function List() {
             }
         }
     }
-    const removeCard = (id, list) => {
+    const removeCard = (e,id, list) => {
+        e?.stopPropagation();
         let type = '';
         switch (list) {
             case '1':
@@ -88,7 +90,8 @@ function List() {
         }
         setListData(prev => ({...prev, [type]: prev[type].filter(card => card.id !== id)}));
     }
-    const changeCard = (id, list) => {
+    const changeCard = (e, id, list, action) => {
+        e?.stopPropagation();
         let type = '';
         switch (list) {
             case '1':
@@ -108,7 +111,7 @@ function List() {
         }
         const obj = [...listData[type]].filter(card => card.id === id)[0];
         if (obj?.id) {
-            setModal(prev => ({...prev, isShow: true, list: type, type: 'change', value: {...obj}}))
+            setModal(prev => ({...prev, isShow: true, list: type, type: action, value: {...obj}}))
         }
     }
     const exchangeCard = (id, title, content, list) => {
@@ -118,14 +121,14 @@ function List() {
         setListData(prev => ({...prev, [list]: newArray}));
     }
     return (
-        <div className="h-100 container">
+        <div className="h-100 wrapper container mt-3">
             <button className="btn btn-outline-primary mb-5"
                     onClick={() => setModal(prev => ({isShow: true, type: 'add'}))}>Создать задачу
             </button>
             <Modal params={modal} changeHidden={setModal} exchangeCard={exchangeCard} addCard={addCard}/>
-            <div className="row h-75">
+            <div className="rowList row">
                 <div className="list col-12 col-sm-6 col-md-3">
-                    <h4>Созданные задачи</h4>
+                    <h4 className='list__title text-secondary'>Созданные задачи</h4>
                     {
                         listData.created.map((card, index) =>
                             <Card
@@ -140,7 +143,7 @@ function List() {
                     }
                 </div>
                 <div className="list col-12 col-sm-6 col-md-3">
-                    <h4>В процессе</h4>
+                    <h4 className='list__title text-secondary'>В процессе</h4>
                     {
                         listData.progress.map((card, index) =>
                             <Card
@@ -155,7 +158,7 @@ function List() {
                     }
                 </div>
                 <div className="list col-12 col-sm-6 col-md-3">
-                    <h4>На проверке</h4>
+                    <h4 className='list__title text-secondary'>На проверке</h4>
                     {
                         listData.inspection.map((card, index) =>
                             <Card
@@ -170,7 +173,7 @@ function List() {
                     }
                 </div>
                 <div className="list col-12 col-sm-6 col-md-3">
-                    <h4>Готово</h4>
+                    <h4 className='list__title text-secondary'>Готово</h4>
                     {
                         listData.ready.map((card, index) =>
                             <Card

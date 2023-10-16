@@ -8,7 +8,7 @@ function Modal({params, changeHidden, addCard, exchangeCard}) {
         style.push('poppup__active');
     }
     useEffect(() => {
-        if (params.type === 'change' && params.value.id) {
+        if (params.type === 'change' && params.value.id || params.type === 'show' && params.value.id) {
             setCardParams(prev => ({id: params.value.id, title: params.value.title, content: params.value.content}))
         }
     }, [params])
@@ -42,12 +42,19 @@ function Modal({params, changeHidden, addCard, exchangeCard}) {
                                   onChange={e => setCardParams(prev => ({...prev, content: e.target.value}))}/>
                     </label>
                     {
-                        params.type === 'add' ?
+                        params.type === 'show' ?
                             <button className="btn btn-outline-primary"
-                                    onClick={() => pushAddParams()}>Сохранить</button>
+                                    onClick={() => changeHidden(prev => ({
+                                        ...prev,
+                                        isShow: !prev.isShow
+                                    }))}>Закрыть</button>
                             :
-                            <button className="btn btn-outline-primary"
-                                    onClick={() => changeContentCard()}>Изменить</button>
+                            params.type === 'add' ?
+                                <button className="btn btn-outline-primary"
+                                        onClick={() => pushAddParams()}>Сохранить</button>
+                                :
+                                <button className="btn btn-outline-primary"
+                                        onClick={() => changeContentCard()}>Изменить</button>
                     }
                 </div>
             </div>

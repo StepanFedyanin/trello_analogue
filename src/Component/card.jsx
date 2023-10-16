@@ -26,24 +26,23 @@ function Card({type,data,movingCard,removeCard,changeCard}) {
                return 'btn-outline-danger'
            case '4':
                return 'btn-outline-success'
-       
            default:
                break;
        }
    }
-    return (  
-        <div className={"card alert align-items-end "+ typeDefinitionAlert(type)}>
-            <button className="card__close" onClick={()=>removeCard(data.id, type)}>
+    return (
+        <div className={"card alert align-items-end "+ typeDefinitionAlert(type)} onClick={(e)=>changeCard(e,data.id, type, 'show')}>
+            <button className="card__close" onClick={(e)=>removeCard(e,data.id, type)}>
                 <img src={mark} alt=''/>
             </button>
-            <h6 className='w-100'>{data.title}</h6>
-            <p className='w-100'>{data.content}</p>
-            <button className="card__close mb-2" onClick={()=>changeCard(data.id, type)}>
+            <h6 className='card__title w-100'>{data.title}</h6>
+            <p className='card__content w-100'>{data.content}</p>
+            <button className="card__close mb-2" onClick={(e)=>changeCard(e,data.id, type, 'change')}>
                 <img src={pencil} alt=''/>
             </button>
             <div className="w-100 d-flex justify-content-between">
-                <button className={"btn w-auto px-2 py-0 "+typeDefinitionBtn(type)} disabled={type==='1'} onClick={()=>movingCard((Number(type)-1),'prev', data)}>&#8592;</button>
-                <button className={"btn w-auto px-2 py-0 "+typeDefinitionBtn(type)} disabled={type==='4'} onClick={()=>movingCard((Number(type)+1),'next', data)}>&#8594;</button>
+                <button className={"btn w-auto px-2 py-0 "+typeDefinitionBtn(type)} disabled={type==='1'} onClick={(e)=>movingCard(e,(Number(type)-1),'prev', data)}>&#8592;</button>
+                <button className={"btn w-auto px-2 py-0 "+typeDefinitionBtn(type)} disabled={type==='4'} onClick={(e)=>movingCard(e,(Number(type)+1),'next', data)}>&#8594;</button>
             </div>
         </div>
     );
